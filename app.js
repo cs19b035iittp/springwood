@@ -6,13 +6,50 @@ const locationInput = document.querySelector('#location-input');
 const unitSelect = document.querySelector('#unit-select');
 const weatherDisplay = document.querySelector('#weather-display');
 const submitButton = document.querySelector('#submit-btn');
+ 
+ // TODO: Add SDKs for Firebase products that you want to use
+ // https://firebase.google.com/docs/web/setup#available-libraries
 
+ // Your web app's Firebase configuration
+ // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+ 
+ // Initialize Firebase
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+ import { getAnalytics,logEvent } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-analytics.js";
+ // TODO: Add SDKs for Firebase products that you want to use
+ // https://firebase.google.com/docs/web/setup#available-libraries
+
+ // Your web app's Firebase configuration
+ // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+ const firebaseConfig = {
+   apiKey: "AIzaSyATIQ7UkbFFrLrA23EDwDTYS-hXCj6OTDo",
+   authDomain: "springwood-71eba.firebaseapp.com",
+   projectId: "springwood-71eba",
+   storageBucket: "springwood-71eba.appspot.com",
+   messagingSenderId: "104937990910",
+   appId: "1:104937990910:web:6525be07372a94d05713af",
+   measurementId: "G-YHTTWLWKJ6"
+ };
+
+ // Initialize Firebase
+ const app = initializeApp(firebaseConfig);
+ const analytics = getAnalytics(app);
+ //log event
+ 
+
+ 
 function fetchWeatherData() {
   const location = locationInput.value;
   const units = unitSelect.value;
   const url = `${apiUrl}?q=${location}&units=${units}&appid=${apiKey}`;
   console.log(url)
   
+  logEvent(analytics, 'search', {
+    search_term: location
+  });
+  logEvent(analytics, 'search', {
+    search_term: units
+  });
   fetch(url)
     .then(response => response.json())
     .then(data => {
@@ -76,3 +113,4 @@ submitButton.addEventListener('click', event => {
   weatherDisplay.innerHTML = '<p>Loading weather data...</p>';
   fetchWeatherData();
 });
+
